@@ -1,0 +1,18 @@
+main {
+    background-image: url("./ImagemDeFundo.png");
+    background-size: cover;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.container__form {
+    background-color: white;
+    width: 50vw;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
