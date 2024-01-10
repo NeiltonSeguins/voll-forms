@@ -1,8 +1,11 @@
 import logo from "./Logo.png";
 import { useState } from "react";
 import Botao from "../../components/Botao";
+import { Step, Stepper, StepButton } from "@mui/material";
 import CampoDigitacao from "../../components/CampoDigitacao";
 import "./styles.css";
+
+const steps = ["", ""];
 
 export default function Cadastro() {
   const [etapaAtiva, setEtapaAtiva] = useState(0);
@@ -16,21 +19,78 @@ export default function Cadastro() {
   const [rua, setRua] = useState("");
   const [numero, setNumero] = useState("");
   const [complemento, setComplemento] = useState("");
+  const [completed, setCompleted] = useState<{
+    [k: number]: boolean;
+  }>({});
+
+  const stepStyle = {
+    width: "550px",
+    marginTop: "2rem",
+    padding: "2rem 0",
+
+    ".css-1u4zpwo-MuiSvgIcon-root-MuiStepIcon-root": {
+      color: "rgba(231, 235, 239, 1)",
+      fontSize: "2rem",
+    },
+
+    ".css-zpcwqm-MuiStepConnector-root": {
+      top: "16px",
+    },
+
+    "& .Mui-active": {
+      "&.MuiStepIcon-root": {
+        color: "primary.light",
+      },
+    },
+
+    "& .MuiStepConnector-line": {
+      width: "85%",
+      borderTopWidth: "3px",
+      borderColor: "primary.light",
+      top: "20px",
+    },
+  };
+
+  const handleProximaEtapa = () => {
+    setEtapaAtiva((etapaAtivaAnterior) => etapaAtivaAnterior + 1);
+    const newCompleted = completed;
+    newCompleted[etapaAtiva] = true;
+    setCompleted(newCompleted);
+  };
+
+  const handleStep = (step: number) => () => {
+    setEtapaAtiva(step);
+  };
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault(); // previne o envio padrão do formulário
+    event.preventDefault();
 
-    setEtapaAtiva(etapaAtiva + 1); // atualiza o estado da etapa para a próxima etapa
+    handleProximaEtapa();
   };
 
   return (
     <>
       <img className="logo__formulario" src={logo} alt="Logo da Voll" />
 
+      <Stepper
+        nonLinear
+        activeStep={etapaAtiva}
+        alternativeLabel
+        sx={stepStyle}
+      >
+        {steps.map((label, index) => {
+          return (
+            <Step key={label} completed={completed[index]}>
+              <StepButton onClick={handleStep(index)}>{label}</StepButton>
+            </Step>
+          );
+        })}
+      </Stepper>
+
       {etapaAtiva === 0 ? (
         <>
           <h2 className="titulo">Insira alguns dados básicos:</h2>
-          <form className="formulario__paciente" onSubmit={handleSubmit}>
+          <form className="formulario__paciente">
             <CampoDigitacao
               id="campo-nome"
               tipo="text"
@@ -71,7 +131,9 @@ export default function Cadastro() {
               placeholder="Repita a senha anterior"
               onChange={setSenhaVerificada}
             />
-            <Botao tipo="submit">Avançar</Botao>
+            <Botao tipo="button" handleClick={handleProximaEtapa}>
+              Avançar
+            </Botao>
           </form>
         </>
       ) : (
