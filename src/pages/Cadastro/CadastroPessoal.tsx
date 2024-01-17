@@ -1,55 +1,41 @@
+import { SubmitHandler, useForm } from "react-hook-form";
 import Botao from "../../components/Botao";
-import { ChangeEvent, FormEvent, useState } from "react";
 
 type CadastroPessoalProps = {
   proximaEtapa: () => void;
 };
 
+interface IFormInput {
+  nome: string;
+  email: string;
+  telefone: string;
+  senha: string;
+  senhaVerificada: string;
+}
+
 const CadastroPessoal = ({ proximaEtapa }: CadastroPessoalProps) => {
-  const [entrada, setEntrada] = useState({
-    nome: "",
-    email: "",
-    telefone: "",
-    senha: "",
-    senhaVerificada: "",
-  });
+  const { register, handleSubmit } = useForm<IFormInput>();
 
-  function handleChange(e: ChangeEvent<HTMLInputElement>) {
-    const { name, value } = e.target;
-
-    const entradasAtualizadas = { ...entrada, [name]: value };
-    setEntrada(entradasAtualizadas);
-  }
-
-  function handleSubmit(e: FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-
-    console.log(entrada);
-
-    setEntrada({
-      nome: "",
-      email: "",
-      telefone: "",
-      senha: "",
-      senhaVerificada: "",
-    });
+  const aoSubmeter: SubmitHandler<IFormInput> = (dados) => {
+    console.log(dados);
 
     proximaEtapa();
-  }
+  };
 
   return (
     <>
       <h2 className="titulo">Insira alguns dados básicos:</h2>
-      <form className="formulario__paciente" onSubmit={handleSubmit}>
+      <form
+        className="formulario__paciente"
+        onSubmit={handleSubmit(aoSubmeter)}
+      >
         <div>
           <label htmlFor="campo-nome">Nome</label>
           <input
             id="campo-nome"
             type="text"
-            name="nome"
-            value={entrada.nome}
             placeholder="Digite seu nome completo"
-            onChange={handleChange}
+            {...register("nome")}
           />
         </div>
         <div>
@@ -57,10 +43,8 @@ const CadastroPessoal = ({ proximaEtapa }: CadastroPessoalProps) => {
           <input
             id="campo-email"
             type="email"
-            name="email"
-            value={entrada.email}
             placeholder="Insira seu endereço de email"
-            onChange={handleChange}
+            {...register("email")}
           />
         </div>
         <div>
@@ -68,10 +52,8 @@ const CadastroPessoal = ({ proximaEtapa }: CadastroPessoalProps) => {
           <input
             id="campo-telefone"
             type="text"
-            name="telefone"
-            value={entrada.telefone}
             placeholder="(DDD) XXXXX-XXXX"
-            onChange={handleChange}
+            {...register("telefone")}
           />
         </div>
         <div>
@@ -79,10 +61,8 @@ const CadastroPessoal = ({ proximaEtapa }: CadastroPessoalProps) => {
           <input
             id="campo-senha"
             type="password"
-            name="senha"
-            value={entrada.senha}
             placeholder="Digite sua senha"
-            onChange={handleChange}
+            {...register("senha")}
           />
         </div>
         <div>
@@ -90,10 +70,8 @@ const CadastroPessoal = ({ proximaEtapa }: CadastroPessoalProps) => {
           <input
             id="campo-senha-confirmacao"
             type="password"
-            name="senhaVerificada"
-            value={entrada.senhaVerificada}
             placeholder="Repita a senha anterior"
-            onChange={handleChange}
+            {...register("senhaVerificada")}
           />
         </div>
         <Botao tipo="submit">Avançar</Botao>
