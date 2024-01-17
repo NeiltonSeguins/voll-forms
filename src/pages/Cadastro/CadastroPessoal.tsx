@@ -14,7 +14,12 @@ interface IFormInput {
 }
 
 const CadastroPessoal = ({ proximaEtapa }: CadastroPessoalProps) => {
-  const { register, handleSubmit } = useForm<IFormInput>();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    watch,
+  } = useForm<IFormInput>();
 
   const aoSubmeter: SubmitHandler<IFormInput> = (dados) => {
     console.log(dados);
@@ -31,6 +36,23 @@ const CadastroPessoal = ({ proximaEtapa }: CadastroPessoalProps) => {
 
     return true;
   }
+  const senha = watch("senha");
+
+  const validarSenha = (value: string) => {
+    if (!value) {
+      return "Campo obrigatório";
+    }
+
+    if (value.length < 8) {
+      return "A senha deve ter pelo menos 8 caracteres";
+    }
+
+    if (value !== senha) {
+      return "As senhas não coincidem";
+    }
+
+    return true;
+  };
 
   return (
     <>
@@ -45,8 +67,16 @@ const CadastroPessoal = ({ proximaEtapa }: CadastroPessoalProps) => {
             id="campo-nome"
             type="text"
             placeholder="Digite seu nome completo"
-            {...register("nome", { required: true, minLength: 7 })}
+            aria-invalid={errors.nome ? "true" : "false"}
+            {...register("nome", {
+              required: "Campo de nome é obrigatório",
+              minLength: {
+                value: 5,
+                message: "O nome deve ter pelo menos cinco caracteres",
+              },
+            })}
           />
+          {errors.nome && <span>{errors.nome.message}</span>}
         </div>
         <div>
           <label htmlFor="campo-email">Email</label>
@@ -54,8 +84,12 @@ const CadastroPessoal = ({ proximaEtapa }: CadastroPessoalProps) => {
             id="campo-email"
             type="email"
             placeholder="Insira seu endereço de email"
-            {...register("email", { required: true, validate: validarEmail })}
+            {...register("email", {
+              required: "Campo de email obrigatório",
+              validate: validarEmail,
+            })}
           />
+          {errors.email && <span>{errors.email.message}</span>}
         </div>
         <div>
           <label htmlFor="campo-telefone">Telefone</label>
@@ -64,10 +98,14 @@ const CadastroPessoal = ({ proximaEtapa }: CadastroPessoalProps) => {
             type="text"
             placeholder="(DDD) XXXXX-XXXX"
             {...register("telefone", {
-              pattern: /^\(\d{2,3}\) \d{5}-\d{4}$/,
-              required: true,
+              pattern: {
+                value: /^\(\d{2,3}\) \d{5}-\d{4}$/,
+                message: "O telefone inserido está no formato incorreto",
+              },
+              required: "Campo de telefone é obrigatório",
             })}
           />
+          {errors.telefone && <span>{errors.telefone.message}</span>}
         </div>
         <div>
           <label htmlFor="campo-senha">Crie uma senha</label>
@@ -75,8 +113,15 @@ const CadastroPessoal = ({ proximaEtapa }: CadastroPessoalProps) => {
             id="campo-senha"
             type="password"
             placeholder="Digite sua senha"
-            {...register("senha")}
+            {...register("senha", {
+              required: "O campo senha é obrigatório",
+              minLength: {
+                value: 8,
+                message: "A senha deve ter pelo menos 8 caracteres",
+              },
+            })}
           />
+          {errors.senha && <span>{errors.senha.message}</span>}
         </div>
         <div>
           <label htmlFor="campo-senha-confirmacao">Repita a senha</label>
@@ -84,8 +129,14 @@ const CadastroPessoal = ({ proximaEtapa }: CadastroPessoalProps) => {
             id="campo-senha-confirmacao"
             type="password"
             placeholder="Repita a senha anterior"
-            {...register("senhaVerificada")}
+            {...register("senhaVerificada", {
+              required: "Repita a senha",
+              validate: validarSenha,
+            })}
           />
+          {errors.senhaVerificada && (
+            <span>{errors.senhaVerificada.message}</span>
+          )}
         </div>
         <Botao tipo="submit">Avançar</Botao>
       </form>
