@@ -22,6 +22,16 @@ const CadastroPessoal = ({ proximaEtapa }: CadastroPessoalProps) => {
     proximaEtapa();
   };
 
+  function validarEmail(valor: string) {
+    const formatoEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!formatoEmail.test(valor)) {
+      return "Endereço de e-mail inválido";
+    }
+
+    return true;
+  }
+
   return (
     <>
       <h2 className="titulo">Insira alguns dados básicos:</h2>
@@ -44,7 +54,7 @@ const CadastroPessoal = ({ proximaEtapa }: CadastroPessoalProps) => {
             id="campo-email"
             type="email"
             placeholder="Insira seu endereço de email"
-            {...register("email")}
+            {...register("email", { required: true, validate: validarEmail })}
           />
         </div>
         <div>
@@ -53,7 +63,10 @@ const CadastroPessoal = ({ proximaEtapa }: CadastroPessoalProps) => {
             id="campo-telefone"
             type="text"
             placeholder="(DDD) XXXXX-XXXX"
-            {...register("telefone", { pattern: /^\(\d{2,3}\) \d{5}-\d{4}$/ })}
+            {...register("telefone", {
+              pattern: /^\(\d{2,3}\) \d{5}-\d{4}$/,
+              required: true,
+            })}
           />
         </div>
         <div>
