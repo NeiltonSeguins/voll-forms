@@ -1,62 +1,101 @@
-import CampoDigitacao from "../../components/CampoDigitacao";
 import Botao from "../../components/Botao";
-import { useState } from "react";
+import { ChangeEvent, FormEvent, useState } from "react";
 
 type CadastroPessoalProps = {
   proximaEtapa: () => void;
 };
 
 const CadastroPessoal = ({ proximaEtapa }: CadastroPessoalProps) => {
-  const [email, setEmail] = useState("");
-  const [senha, setSenha] = useState("");
-  const [nome, setNome] = useState("");
-  const [senhaVerificada, setSenhaVerificada] = useState("");
-  const [telefone, setTelefone] = useState("");
+  const [entrada, setEntrada] = useState({
+    nome: "",
+    email: "",
+    telefone: "",
+    senha: "",
+    senhaVerificada: "",
+  });
+
+  function handleChange(e: ChangeEvent<HTMLInputElement>) {
+    const { name, value } = e.target;
+
+    const entradasAtualizadas = { ...entrada, [name]: value };
+    setEntrada(entradasAtualizadas);
+  }
+
+  function handleSubmit(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+
+    console.log(entrada);
+
+    setEntrada({
+      nome: "",
+      email: "",
+      telefone: "",
+      senha: "",
+      senhaVerificada: "",
+    });
+
+    proximaEtapa();
+  }
 
   return (
     <>
       <h2 className="titulo">Insira alguns dados básicos:</h2>
-      <form className="formulario__paciente" onSubmit={proximaEtapa}>
-        <CampoDigitacao
-          id="campo-nome"
-          tipo="text"
-          label="Nome"
-          valor={nome}
-          placeholder="Digite seu nome completo"
-          onChange={setNome}
-        />
-        <CampoDigitacao
-          id="campo-email"
-          tipo="email"
-          label="Email"
-          valor={email}
-          placeholder="Insira seu endereço de email"
-          onChange={setEmail}
-        />
-        <CampoDigitacao
-          id="campo-telefone"
-          tipo="tel"
-          label="Telefone"
-          valor={telefone}
-          placeholder="(DDD) XXXXX-XXXX"
-          onChange={setTelefone}
-        />
-        <CampoDigitacao
-          id="campo-senha"
-          tipo="password"
-          label="Crie uma senha"
-          valor={senha}
-          placeholder="Digite sua senha"
-          onChange={setSenha}
-        />
-        <CampoDigitacao
-          id="campo-senha-confirmacao"
-          tipo="password"
-          label="Repita a senha"
-          valor={senhaVerificada}
-          placeholder="Repita a senha anterior"
-          onChange={setSenhaVerificada}
-        />
+      <form className="formulario__paciente" onSubmit={handleSubmit}>
+        <div>
+          <label htmlFor="campo-nome">Nome</label>
+          <input
+            id="campo-nome"
+            type="text"
+            name="nome"
+            value={entrada.nome}
+            placeholder="Digite seu nome completo"
+            onChange={handleChange}
+          />
+        </div>
+        <div>
+          <label htmlFor="campo-email">Email</label>
+          <input
+            id="campo-email"
+            type="email"
+            name="email"
+            value={entrada.email}
+            placeholder="Insira seu endereço de email"
+            onChange={handleChange}
+          />
+        </div>
+        <div>
+          <label htmlFor="campo-telefone">Telefone</label>
+          <input
+            id="campo-telefone"
+            type="text"
+            name="telefone"
+            value={entrada.telefone}
+            placeholder="(DDD) XXXXX-XXXX"
+            onChange={handleChange}
+          />
+        </div>
+        <div>
+          <label htmlFor="campo-senha">Crie uma senha</label>
+          <input
+            id="campo-senha"
+            type="password"
+            name="senha"
+            value={entrada.senha}
+            placeholder="Digite sua senha"
+            onChange={handleChange}
+          />
+        </div>
+        <div>
+          <label htmlFor="campo-senha-confirmacao">Repita a senha</label>
+          <input
+            id="campo-senha-confirmacao"
+            type="password"
+            name="senhaVerificada"
+            value={entrada.senhaVerificada}
+            placeholder="Repita a senha anterior"
+            onChange={handleChange}
+          />
+        </div>
         <Botao tipo="submit">Avançar</Botao>
       </form>
     </>
