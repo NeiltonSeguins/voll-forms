@@ -35,7 +35,7 @@ const CadastroPessoal = ({ proximaEtapa }: CadastroPessoalProps) => {
             id="campo-nome"
             type="text"
             placeholder="Digite seu nome completo"
-            {...register("nome")}
+            {...register("nome", { required: true, minLength: 7 })}
           />
         </div>
         <div>
@@ -53,7 +53,7 @@ const CadastroPessoal = ({ proximaEtapa }: CadastroPessoalProps) => {
             id="campo-telefone"
             type="text"
             placeholder="(DDD) XXXXX-XXXX"
-            {...register("telefone")}
+            {...register("telefone", { pattern: /^\(\d{2,3}\) \d{5}-\d{4}$/ })}
           />
         </div>
         <div>
