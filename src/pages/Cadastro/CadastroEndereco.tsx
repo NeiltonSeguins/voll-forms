@@ -1,5 +1,7 @@
+import { useEffect } from "react";
 import Botao from "../../components/Botao";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { mascaraCep } from "../../utils/mascaras";
 
 type CadastroEnderecoProps = {
   proximaEtapa: () => void;
@@ -14,7 +16,13 @@ interface IFormCadastroEndereco {
 }
 
 const CadastroEndereco = ({ proximaEtapa }: CadastroEnderecoProps) => {
-  const { register, handleSubmit } = useForm<IFormCadastroEndereco>({
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    watch,
+    setValue,
+  } = useForm<IFormCadastroEndereco>({
     defaultValues: {
       estado: "",
       cep: "",
@@ -29,6 +37,12 @@ const CadastroEndereco = ({ proximaEtapa }: CadastroEnderecoProps) => {
     proximaEtapa();
   };
 
+  const cepDigitado = watch("cep");
+
+  useEffect(() => {
+    setValue("cep", mascaraCep(cepDigitado));
+  }, [cepDigitado]);
+
   return (
     <>
       <h2 className="titulo">Agora, mais alguns dados sobre você:</h2>
@@ -41,9 +55,12 @@ const CadastroEndereco = ({ proximaEtapa }: CadastroEnderecoProps) => {
           <input
             id="campo-cep"
             type="text"
-            {...register("cep")}
+            {...register("cep", {
+              required: "O campo de cep é obrigatório",
+            })}
             placeholder="Insira o CEP"
           />
+          {errors.cep && <span>{errors.cep.message}</span>}
         </div>
         <div>
           <label htmlFor="campo-rua">Rua</label>
