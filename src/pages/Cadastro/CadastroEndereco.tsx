@@ -8,11 +8,11 @@ type CadastroEnderecoProps = {
 };
 
 interface IFormCadastroEndereco {
-  estado: string;
+  localidade: string;
   cep: string;
   rua: string;
   numero: string;
-  complemento: string;
+  bairro: string;
 }
 
 const CadastroEndereco = ({ proximaEtapa }: CadastroEnderecoProps) => {
@@ -22,22 +22,51 @@ const CadastroEndereco = ({ proximaEtapa }: CadastroEnderecoProps) => {
     formState: { errors },
     watch,
     setValue,
+    setError,
+    reset,
   } = useForm<IFormCadastroEndereco>({
     defaultValues: {
-      estado: "",
+      localidade: "",
       cep: "",
       rua: "",
       numero: "",
-      complemento: "",
+      bairro: "",
     },
   });
 
   const aoSubmeter: SubmitHandler<IFormCadastroEndereco> = (dados) => {
     console.log(dados);
+    reset();
     proximaEtapa();
   };
 
   const cepDigitado = watch("cep");
+
+  const fetchEndereco = async (cep: string) => {
+    if (!cep) {
+      setError("cep", {
+        type: "manual",
+        message: "Cep inválido",
+      });
+
+      return;
+    }
+
+    try {
+      const response = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
+      const data = await response.json();
+
+      if (response.ok) {
+        setValue("rua", data.logradouro);
+        setValue("localidade", `${data.localidade}, ${data.uf}`);
+        setValue("bairro", data.bairro);
+      } else {
+        throw new Error("Cep inválido");
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   useEffect(() => {
     setValue("cep", mascaraCep(cepDigitado));
@@ -59,6 +88,7 @@ const CadastroEndereco = ({ proximaEtapa }: CadastroEnderecoProps) => {
               required: "O campo de cep é obrigatório",
             })}
             placeholder="Insira o CEP"
+            onBlur={() => fetchEndereco(cepDigitado)}
           />
           {errors.cep && <span>{errors.cep.message}</span>}
         </div>
@@ -67,7 +97,7 @@ const CadastroEndereco = ({ proximaEtapa }: CadastroEnderecoProps) => {
           <input
             id="campo-rua"
             type="text"
-            {...register("rua")}
+            {...register("rua", { required: "Campo obrigatóirio" })}
             placeholder="Rua"
           />
         </div>
@@ -77,26 +107,27 @@ const CadastroEndereco = ({ proximaEtapa }: CadastroEnderecoProps) => {
             <input
               id="campo-numero-rua"
               type="text"
-              {...register("numero")}
+              {...register("numero", { required: "Obrigatório" })}
               placeholder="Número"
             />
+            {errors.numero && <span>{errors.numero.message}</span>}
           </div>
           <div>
-            <label htmlFor="campo-complemento">Complemento</label>
+            <label htmlFor="campo-bairro">Bairro</label>
             <input
-              id="campo-complemento"
+              id="campo-bairro"
               type="text"
-              {...register("complemento")}
-              placeholder="Complemento"
+              {...register("bairro")}
+              placeholder="bairro"
             />
           </div>
         </div>
         <div>
-          <label htmlFor="campo-estado">Estado</label>
+          <label htmlFor="campo-localidade">Localidade</label>
           <input
-            id="campo-estado"
+            id="campo-localidade"
             type="text"
-            {...register("estado")}
+            {...register("localidade")}
             placeholder="Estado"
           />
         </div>
