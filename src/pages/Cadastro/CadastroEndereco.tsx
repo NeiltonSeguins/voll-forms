@@ -1,55 +1,48 @@
-import { ChangeEvent, FormEvent, useState } from "react";
 import Botao from "../../components/Botao";
+import { SubmitHandler, useForm } from "react-hook-form";
 
 type CadastroEnderecoProps = {
   proximaEtapa: () => void;
 };
 
+interface IFormCadastroEndereco {
+  estado: string;
+  cep: string;
+  rua: string;
+  numero: string;
+  complemento: string;
+}
+
 const CadastroEndereco = ({ proximaEtapa }: CadastroEnderecoProps) => {
-  const [entrada, setEntrada] = useState({
-    estado: "",
-    cep: "",
-    rua: "",
-    numero: "",
-    complemento: "",
-  });
-
-  function handleChange(e: ChangeEvent<HTMLInputElement>) {
-    const { name, value } = e.target;
-
-    const entradasAtualizadas = { ...entrada, [name]: value };
-    setEntrada(entradasAtualizadas);
-  }
-
-  function handleSubmit(e: FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-
-    console.log(entrada);
-
-    setEntrada({
+  const { register, handleSubmit } = useForm<IFormCadastroEndereco>({
+    defaultValues: {
       estado: "",
       cep: "",
       rua: "",
       numero: "",
       complemento: "",
-    });
+    },
+  });
 
+  const aoSubmeter: SubmitHandler<IFormCadastroEndereco> = (dados) => {
+    console.log(dados);
     proximaEtapa();
-  }
+  };
 
   return (
     <>
       <h2 className="titulo">Agora, mais alguns dados sobre você:</h2>
-      <form className="formulario__paciente" onSubmit={handleSubmit}>
+      <form
+        className="formulario__paciente"
+        onSubmit={handleSubmit(aoSubmeter)}
+      >
         <div>
           <label htmlFor="campo-cep">Cep</label>
           <input
             id="campo-cep"
             type="text"
-            name="cep"
-            value={entrada.cep}
+            {...register("cep")}
             placeholder="Insira o CEP"
-            onChange={handleChange}
           />
         </div>
         <div>
@@ -57,10 +50,8 @@ const CadastroEndereco = ({ proximaEtapa }: CadastroEnderecoProps) => {
           <input
             id="campo-rua"
             type="text"
-            name="rua"
-            value={entrada.rua}
+            {...register("rua")}
             placeholder="Rua"
-            onChange={handleChange}
           />
         </div>
         <div className="formulario__container">
@@ -69,10 +60,8 @@ const CadastroEndereco = ({ proximaEtapa }: CadastroEnderecoProps) => {
             <input
               id="campo-numero-rua"
               type="text"
-              name="numero"
-              value={entrada.numero}
+              {...register("numero")}
               placeholder="Número"
-              onChange={handleChange}
             />
           </div>
           <div>
@@ -80,10 +69,8 @@ const CadastroEndereco = ({ proximaEtapa }: CadastroEnderecoProps) => {
             <input
               id="campo-complemento"
               type="text"
-              name="complemento"
-              value={entrada.complemento}
+              {...register("complemento")}
               placeholder="Complemento"
-              onChange={handleChange}
             />
           </div>
         </div>
@@ -92,10 +79,8 @@ const CadastroEndereco = ({ proximaEtapa }: CadastroEnderecoProps) => {
           <input
             id="campo-estado"
             type="text"
-            name="estado"
-            value={entrada.estado}
+            {...register("estado")}
             placeholder="Estado"
-            onChange={handleChange}
           />
         </div>
         <Botao tipo="submit">Cadastrar</Botao>

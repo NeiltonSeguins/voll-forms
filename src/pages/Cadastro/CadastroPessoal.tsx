@@ -5,7 +5,7 @@ type CadastroPessoalProps = {
   proximaEtapa: () => void;
 };
 
-interface IFormInput {
+interface IFormCadastroPessoal {
   nome: string;
   email: string;
   telefone: string;
@@ -19,9 +19,9 @@ const CadastroPessoal = ({ proximaEtapa }: CadastroPessoalProps) => {
     handleSubmit,
     formState: { errors },
     watch,
-  } = useForm<IFormInput>();
+  } = useForm<IFormCadastroPessoal>();
 
-  const aoSubmeter: SubmitHandler<IFormInput> = (dados) => {
+  const aoSubmeter: SubmitHandler<IFormCadastroPessoal> = (dados) => {
     console.log(dados);
 
     proximaEtapa();
@@ -36,6 +36,7 @@ const CadastroPessoal = ({ proximaEtapa }: CadastroPessoalProps) => {
 
     return true;
   }
+
   const senha = watch("senha");
 
   const validarSenha = (value: string) => {
