@@ -6,7 +6,7 @@ import CadastroEndereco from "./CadastroEndereco";
 import "./styles.css";
 
 export default function Cadastro() {
-  const { etapaAtiva, completa, handleStep, handleProximaEtapa } = useEtapas();
+  const { etapaAtiva, handleProximaEtapa } = useEtapas();
 
   return (
     <>
@@ -17,11 +17,11 @@ export default function Cadastro() {
         handleStep={handleStep}
       /> */}
 
-      {/* {etapaAtiva === 0 ? (
+      {etapaAtiva === 0 ? (
         <CadastroPessoal proximaEtapa={handleProximaEtapa} />
-      ) : ( */}
-      <CadastroEndereco proximaEtapa={handleProximaEtapa} />
-      {/* )} */}
+      ) : (
+        <CadastroEndereco proximaEtapa={handleProximaEtapa} />
+      )}
     </>
   );
 }

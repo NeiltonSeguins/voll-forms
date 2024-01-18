@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import Botao from "../../components/Botao";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { mascaraCep } from "../../utils/mascaras";
+import CampoDigitacao from "../../components/CampoDigitacao";
 
 type CadastroEnderecoProps = {
   proximaEtapa: () => void;
@@ -79,58 +80,52 @@ const CadastroEndereco = ({ proximaEtapa }: CadastroEnderecoProps) => {
         className="formulario__paciente"
         onSubmit={handleSubmit(aoSubmeter)}
       >
-        <div>
-          <label htmlFor="campo-cep">Cep</label>
-          <input
-            id="campo-cep"
-            type="text"
-            {...register("cep", {
-              required: "O campo de cep é obrigatório",
-            })}
-            placeholder="Insira o CEP"
-            onBlur={() => fetchEndereco(cepDigitado)}
-          />
-          {errors.cep && <span>{errors.cep.message}</span>}
-        </div>
-        <div>
-          <label htmlFor="campo-rua">Rua</label>
-          <input
-            id="campo-rua"
-            type="text"
-            {...register("rua", { required: "Campo obrigatóirio" })}
-            placeholder="Rua"
-          />
-        </div>
+        <CampoDigitacao
+          id="campo-cep"
+          legenda="Cep"
+          tipo="text"
+          placeholder="Insira seu CEP"
+          error={errors.cep}
+          {...register("cep", {
+            required: "O campo de cep é obrigatório",
+          })}
+          onBlur={() => fetchEndereco(cepDigitado)}
+        />
+        <CampoDigitacao
+          id="campo-rua"
+          legenda="Rua"
+          tipo="text"
+          placeholder="Rua Agarikov"
+          error={errors.rua}
+          {...register("rua", { required: "Campo obrigatóirio" })}
+        />
+
         <div className="formulario__container">
-          <div>
-            <label htmlFor="campo-numero-rua">Número</label>
-            <input
-              id="campo-numero-rua"
-              type="text"
-              {...register("numero", { required: "Obrigatório" })}
-              placeholder="Número"
-            />
-            {errors.numero && <span>{errors.numero.message}</span>}
-          </div>
-          <div>
-            <label htmlFor="campo-bairro">Bairro</label>
-            <input
-              id="campo-bairro"
-              type="text"
-              {...register("bairro")}
-              placeholder="bairro"
-            />
-          </div>
-        </div>
-        <div>
-          <label htmlFor="campo-localidade">Localidade</label>
-          <input
-            id="campo-localidade"
-            type="text"
-            {...register("localidade")}
-            placeholder="Estado"
+          <CampoDigitacao
+            id="campo-numero-rua"
+            legenda="Número"
+            tipo="text"
+            placeholder="Ex: 20"
+            error={errors.numero}
+            {...register("numero", { required: "Campo obrigatório" })}
+          />
+          <CampoDigitacao
+            id="campo-bairro"
+            legenda="Bairro"
+            tipo="text"
+            placeholder="Vila Mariana"
+            error={errors.bairro}
+            {...register("bairro", { required: "Campo obrigatório" })}
           />
         </div>
+        <CampoDigitacao
+          id="campo-localidade"
+          legenda="Localidade"
+          tipo="text"
+          placeholder="São Paulo, SP"
+          error={errors.localidade}
+          {...register("localidade", { required: "Campo obrigatório" })}
+        />
         <Botao tipo="submit">Cadastrar</Botao>
       </form>
     </>
