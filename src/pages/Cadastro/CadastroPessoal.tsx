@@ -3,6 +3,7 @@ import Botao from "../../components/Botao";
 import { useEffect } from "react";
 import { mascaraTelefone } from "../../utils/mascaras";
 import CampoDigitacao from "../../components/CampoDigitacao";
+import { validarEmail, validarSenha } from "../../utils/validacoes";
 
 type CadastroPessoalProps = {
   proximaEtapa: () => void;
@@ -31,34 +32,8 @@ const CadastroPessoal = ({ proximaEtapa }: CadastroPessoalProps) => {
     proximaEtapa();
   };
 
-  function validarEmail(valor: string) {
-    const formatoEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-    if (!formatoEmail.test(valor)) {
-      return "Endereço de e-mail inválido";
-    }
-
-    return true;
-  }
-
   const senha = watch("senha");
   const telefoneDigitado = watch("telefone");
-
-  const validarSenha = (value: string) => {
-    if (!value) {
-      return "Campo obrigatório";
-    }
-
-    if (value.length < 8) {
-      return "A senha deve ter pelo menos 8 caracteres";
-    }
-
-    if (value !== senha) {
-      return "As senhas não coincidem";
-    }
-
-    return true;
-  };
 
   useEffect(() => {
     setValue("telefone", mascaraTelefone(telefoneDigitado));
@@ -132,7 +107,7 @@ const CadastroPessoal = ({ proximaEtapa }: CadastroPessoalProps) => {
           error={errors.senhaVerificada}
           {...register("senhaVerificada", {
             required: "Repita a senha",
-            validate: validarSenha,
+            validate: (value) => validarSenha(value, senha),
           })}
         />
         <Botao tipo="submit">Avançar</Botao>
