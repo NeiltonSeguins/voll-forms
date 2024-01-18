@@ -1,5 +1,7 @@
 import { SubmitHandler, useForm } from "react-hook-form";
 import Botao from "../../components/Botao";
+import { useEffect } from "react";
+import { mascaraTelefone } from "../../utils/mascaras";
 
 type CadastroPessoalProps = {
   proximaEtapa: () => void;
@@ -19,6 +21,7 @@ const CadastroPessoal = ({ proximaEtapa }: CadastroPessoalProps) => {
     handleSubmit,
     formState: { errors },
     watch,
+    setValue,
   } = useForm<IFormCadastroPessoal>();
 
   const aoSubmeter: SubmitHandler<IFormCadastroPessoal> = (dados) => {
@@ -38,6 +41,7 @@ const CadastroPessoal = ({ proximaEtapa }: CadastroPessoalProps) => {
   }
 
   const senha = watch("senha");
+  const telefoneDigitado = watch("telefone");
 
   const validarSenha = (value: string) => {
     if (!value) {
@@ -54,6 +58,10 @@ const CadastroPessoal = ({ proximaEtapa }: CadastroPessoalProps) => {
 
     return true;
   };
+
+  useEffect(() => {
+    setValue("telefone", mascaraTelefone(telefoneDigitado));
+  }, [telefoneDigitado]);
 
   return (
     <>
