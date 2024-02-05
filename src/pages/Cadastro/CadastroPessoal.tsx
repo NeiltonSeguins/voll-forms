@@ -4,18 +4,22 @@ import { useEffect } from "react";
 import { mascaraTelefone } from "../../utils/mascaras";
 import CampoDigitacao from "../../components/CampoDigitacao";
 import { validarEmail, validarSenha } from "../../utils/validacoes";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 type CadastroPessoalProps = {
   proximaEtapa: () => void;
 };
 
-interface IFormCadastroPessoal {
-  nome: string;
-  email: string;
-  telefone: string;
-  senha: string;
-  senhaVerificada: string;
-}
+const esquemaCadastro = z.object({
+  nome: z.string().min(5, "O nome deve ter pelo menos cinco caracteres"),
+  email: z.string().email("Campo de email obrigatório"),
+  telefone: z.string(),
+  senha: z.string().min(8),
+  senhaVerificada: z.string().min(8),
+});
+
+type esquemaCadastroProps = z.infer<typeof esquemaCadastro>;
 
 const CadastroPessoal = ({ proximaEtapa }: CadastroPessoalProps) => {
   const {
@@ -24,9 +28,11 @@ const CadastroPessoal = ({ proximaEtapa }: CadastroPessoalProps) => {
     formState: { errors },
     watch,
     setValue,
-  } = useForm<IFormCadastroPessoal>();
+  } = useForm<esquemaCadastroProps>({
+    resolver: zodResolver(esquemaCadastro),
+  });
 
-  const aoSubmeter: SubmitHandler<IFormCadastroPessoal> = (dados) => {
+  const aoSubmeter: SubmitHandler<esquemaCadastroProps> = (dados) => {
     console.log(dados);
 
     proximaEtapa();
@@ -52,13 +58,7 @@ const CadastroPessoal = ({ proximaEtapa }: CadastroPessoalProps) => {
           tipo="text"
           placeholder="Digite seu nome completo"
           error={errors.nome}
-          {...register("nome", {
-            required: "Campo de nome é obrigatório",
-            minLength: {
-              value: 5,
-              message: "O nome deve ter pelo menos cinco caracteres",
-            },
-          })}
+          {...register("nome")}
         />
         <CampoDigitacao
           id="campo-email"
@@ -66,10 +66,7 @@ const CadastroPessoal = ({ proximaEtapa }: CadastroPessoalProps) => {
           tipo="email"
           placeholder="Insira seu endereço de email"
           error={errors.email}
-          {...register("email", {
-            required: "Campo de email obrigatório",
-            validate: validarEmail,
-          })}
+          {...register("email")}
         />
         <CampoDigitacao
           id="campo-telefone"

@@ -12,6 +12,10 @@ input {
   line-height: 19px;
 }
 
+input[type="file"] {
+  display: none;
+}
+
 input::placeholder {
   color: rgba(107, 110, 113, 1);
   font-weight: 500;
@@ -47,5 +51,44 @@ div {
 
 .campo__digitacao--erro:focus {
   border: 1px solid #a71e1e;
-  outline-color: #a71e1e  ;
+  outline-color: #a71e1e;
+}
+
+.formulario__divisor {
+  width: 100%;
+  height: 1px;
+  margin: 24px 0;
+  background-color: #e7ebef;
+}
+
+.botao-especialidade {
+  display: block;
+  text-align: right;
+}
+
+.campo__upload {
+  display: flex;
+  padding: 24px;
+  width: 311px;
+  height: 106px;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 8px;
+  border: 2px solid var(--PB-Grey-2, #90989f);
+  cursor: pointer;
+}
+
+.titulo__upload {
+  display: block;
+  margin: 8px 0;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 19px;
+  color: var(--azul-escuro);
+}
+
+.descricao__upload {
+  color: var(--cinza);
+  text-align: center;
+  font-size: 14px;
 }

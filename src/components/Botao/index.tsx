@@ -2,13 +2,19 @@ import "./styles.css";
 
 type BotaoProps = {
   tipo: "button" | "submit" | "reset" | undefined;
+  variante?: "primario" | "secundario";
   children: string;
   handleClick?: () => void;
 };
 
-function Botao({ tipo, children, handleClick }: BotaoProps) {
+function Botao({
+  tipo,
+  variante = "primario",
+  children,
+  handleClick,
+}: BotaoProps) {
   return (
-    <button type={tipo} onClick={handleClick}>
+    <button className={variante} type={tipo} onClick={handleClick}>
       {children}
     </button>
   );

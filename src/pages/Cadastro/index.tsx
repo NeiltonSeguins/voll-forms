@@ -4,6 +4,8 @@ import useEtapas from "../../hooks/useEtapas";
 import CadastroPessoal from "./CadastroPessoal";
 import CadastroEndereco from "./CadastroEndereco";
 import "./styles.css";
+import CadastroEspecialistaTecnico from "./CadastroEspecialistaTecnico";
+import CadastroEspecialistaEndereco from "./CadastroEspecialistaEndereco";
 
 export default function Cadastro() {
   const { etapaAtiva, handleProximaEtapa } = useEtapas();
@@ -18,8 +20,10 @@ export default function Cadastro() {
       /> */}
 
       {etapaAtiva === 0 ? (
-        <CadastroPessoal proximaEtapa={handleProximaEtapa} />
+        // <CadastroEspecialistaTecnico proximaEtapa={handleProximaEtapa} />
+        <CadastroEspecialistaEndereco />
       ) : (
+        // <CadastroPessoal proximaEtapa={handleProximaEtapa} />
         <CadastroEndereco proximaEtapa={handleProximaEtapa} />
       )}
     </>
