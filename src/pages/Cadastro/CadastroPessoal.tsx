@@ -9,17 +9,22 @@ type CadastroPessoalProps = {
   proximaEtapa: () => void;
 };
 
-const esquemaCadastro = z.object({
-  nome: z.string().min(5, "O nome deve ter pelo menos cinco caracteres"),
-  email: z
-    .string()
-    .min(1, "Campo de email obrigatório")
-    .email("O email não é válido")
-    .transform((val) => val.toLocaleLowerCase()),
-  telefone: z.string(),
-  senha: z.string().min(8, "A senha deve ter pelo menos 8 caracteres"),
-  senhaVerificada: z.string().min(1, "Este campo não pode ser vazio"),
-});
+const esquemaCadastro = z
+  .object({
+    nome: z.string().min(5, "O nome deve ter pelo menos cinco caracteres"),
+    email: z
+      .string()
+      .min(1, "Campo de email obrigatório")
+      .email("O email não é válido")
+      .transform((val) => val.toLocaleLowerCase()),
+    telefone: z.string(),
+    senha: z.string().min(8, "A senha deve ter pelo menos 8 caracteres"),
+    senhaVerificada: z.string().min(1, "Este campo não pode ser vazio"),
+  })
+  .refine((data) => data.senha === data.senhaVerificada, {
+    message: "As senhas não coincidem",
+    path: ["senhaVerificada"],
+  });
 
 type esquemaCadastroProps = z.infer<typeof esquemaCadastro>;
 
