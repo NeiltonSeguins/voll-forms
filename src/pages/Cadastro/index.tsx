@@ -20,11 +20,9 @@ export default function Cadastro() {
       /> */}
 
       {etapaAtiva === 0 ? (
-        // <CadastroEspecialistaTecnico proximaEtapa={handleProximaEtapa} />
         <CadastroPessoal proximaEtapa={handleProximaEtapa} />
-        // <CadastroEspecialistaEndereco />
       ) : (
-        <CadastroEndereco proximaEtapa={handleProximaEtapa} />
+        <CadastroEspecialistaTecnico proximaEtapa={handleProximaEtapa} />
       )}
     </>
   );

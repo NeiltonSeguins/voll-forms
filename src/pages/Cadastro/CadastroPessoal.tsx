@@ -15,7 +15,10 @@ const esquemaCadastro = z
       .string()
       .min(1, "Campo de email obrigatório")
       .email("O email não é válido")
-      .transform((val) => val.toLocaleLowerCase()),
+      .transform((val) => val.toLocaleLowerCase())
+      .refine((email) => {
+        return email.endsWith("@voll.com.br");
+      }, "O email deve ser institucional da VollMed"),
     telefone: z.string(),
     senha: z.string().min(8, "A senha deve ter pelo menos 8 caracteres"),
     senhaVerificada: z.string().min(1, "Este campo não pode ser vazio"),
