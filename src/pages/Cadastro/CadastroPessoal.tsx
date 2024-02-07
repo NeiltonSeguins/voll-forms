@@ -3,6 +3,7 @@ import Botao from "../../components/Botao";
 import CampoDigitacao from "../../components/CampoDigitacao";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { validarEmail } from "../../utils/validacoes";
 
 type CadastroPessoalProps = {
   proximaEtapa: () => void;
@@ -13,7 +14,8 @@ const esquemaCadastro = z.object({
   email: z
     .string()
     .min(1, "Campo de email obrigatório")
-    .email("O email não é válido"),
+    .email("O email não é válido")
+    .transform((val) => val.toLocaleLowerCase()),
   telefone: z.string(),
   senha: z.string().min(8, "A senha deve ter pelo menos 8 caracteres"),
   senhaVerificada: z.string().min(1, "Este campo não pode ser vazio"),
