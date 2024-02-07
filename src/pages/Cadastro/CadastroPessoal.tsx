@@ -1,9 +1,6 @@
 import { SubmitHandler, useForm } from "react-hook-form";
 import Botao from "../../components/Botao";
-import { useEffect } from "react";
-import { mascaraTelefone } from "../../utils/mascaras";
 import CampoDigitacao from "../../components/CampoDigitacao";
-import { validarEmail, validarSenha } from "../../utils/validacoes";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 
@@ -13,10 +10,13 @@ type CadastroPessoalProps = {
 
 const esquemaCadastro = z.object({
   nome: z.string().min(5, "O nome deve ter pelo menos cinco caracteres"),
-  email: z.string().email("Campo de email obrigatório"),
+  email: z
+    .string()
+    .min(1, "Campo de email obrigatório")
+    .email("O email não é válido"),
   telefone: z.string(),
-  senha: z.string().min(8),
-  senhaVerificada: z.string().min(8),
+  senha: z.string().min(8, "A senha deve ter pelo menos 8 caracteres"),
+  senhaVerificada: z.string().min(1, "Este campo não pode ser vazio"),
 });
 
 type esquemaCadastroProps = z.infer<typeof esquemaCadastro>;
@@ -26,8 +26,6 @@ const CadastroPessoal = ({ proximaEtapa }: CadastroPessoalProps) => {
     register,
     handleSubmit,
     formState: { errors },
-    watch,
-    setValue,
   } = useForm<esquemaCadastroProps>({
     resolver: zodResolver(esquemaCadastro),
   });
@@ -37,13 +35,6 @@ const CadastroPessoal = ({ proximaEtapa }: CadastroPessoalProps) => {
 
     proximaEtapa();
   };
-
-  const senha = watch("senha");
-  const telefoneDigitado = watch("telefone");
-
-  useEffect(() => {
-    setValue("telefone", mascaraTelefone(telefoneDigitado));
-  }, [telefoneDigitado]);
 
   return (
     <>
@@ -74,13 +65,7 @@ const CadastroPessoal = ({ proximaEtapa }: CadastroPessoalProps) => {
           tipo="text"
           placeholder="Ex: (DDD) XXXXX-XXXX"
           error={errors.telefone}
-          {...register("telefone", {
-            pattern: {
-              value: /^\(\d{2,3}\) \d{5}-\d{4}$/,
-              message: "O telefone inserido está no formato incorreto",
-            },
-            required: "Campo de telefone é obrigatório",
-          })}
+          {...register("telefone")}
         />
         <CampoDigitacao
           id="campo-senha"
@@ -88,13 +73,7 @@ const CadastroPessoal = ({ proximaEtapa }: CadastroPessoalProps) => {
           tipo="password"
           placeholder="Digite sua senha"
           error={errors.senha}
-          {...register("senha", {
-            required: "O campo senha é obrigatório",
-            minLength: {
-              value: 8,
-              message: "A senha deve ter pelo menos 8 caracteres",
-            },
-          })}
+          {...register("senha")}
         />
         <CampoDigitacao
           id="campo-senha-confirmacao"
@@ -102,10 +81,7 @@ const CadastroPessoal = ({ proximaEtapa }: CadastroPessoalProps) => {
           tipo="password"
           placeholder="Repita a senha"
           error={errors.senhaVerificada}
-          {...register("senhaVerificada", {
-            required: "Repita a senha",
-            validate: (value) => validarSenha(value, senha),
-          })}
+          {...register("senhaVerificada")}
         />
         <Botao tipo="submit">Avançar</Botao>
       </form>
