@@ -8,22 +8,10 @@ import CadastroEspecialistaTecnico from "./CadastroEspecialistaTecnico";
 import CadastroEspecialistaEndereco from "./CadastroEspecialistaEndereco";
 
 export default function Cadastro() {
-  const { etapaAtiva, handleProximaEtapa } = useEtapas();
-
   return (
     <>
       <Logotipo />
-      {/* <Etapas
-        etapaAtiva={etapaAtiva}
-        completa={completa}
-        handleStep={handleStep}
-      /> */}
-
-      {etapaAtiva === 0 ? (
-        <CadastroPessoal proximaEtapa={handleProximaEtapa} />
-      ) : (
-        <CadastroEspecialistaTecnico proximaEtapa={handleProximaEtapa} />
-      )}
+      <CadastroEspecialistaTecnico />
     </>
   );
 }

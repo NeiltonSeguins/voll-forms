@@ -33,19 +33,19 @@ const esquemaCadastro = z
     }
   });
 
-type esquemaCadastroProps = z.infer<typeof esquemaCadastro>;
+type esquemaCadastroTipos = z.infer<typeof esquemaCadastro>;
 
 const CadastroPessoal = ({ proximaEtapa }: CadastroPessoalProps) => {
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<esquemaCadastroProps>({
+  } = useForm<esquemaCadastroTipos>({
     mode: "all",
     resolver: zodResolver(esquemaCadastro),
   });
 
-  const aoSubmeter: SubmitHandler<esquemaCadastroProps> = (dados) => {
+  const aoSubmeter: SubmitHandler<esquemaCadastroTipos> = (dados) => {
     console.log(dados);
 
     proximaEtapa();
