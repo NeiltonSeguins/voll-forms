@@ -1,15 +1,17 @@
 import { z } from "zod";
 import Botao from "../../components/Botao";
 import CampoDigitacao from "../../components/CampoDigitacao";
-import upload from "/upload.svg";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useCallback, useEffect } from "react";
 import { mascaraCep } from "../../utils/mascaras";
+import UploadFoto from "../../components/UploadFoto";
+import { supabase } from "../../libs/supabase";
 
 const esquemaEspecialistaEndereco = z
   .object({
     endereco: z.object({
+      avatar: z.instanceof(FileList).transform((lista) => lista.item(0)!),
       cep: z.string().min(1, "Informe um CEP válido"),
       rua: z.string().min(1, "Informe uma Rua válida"),
       numero: z.coerce.number().min(1, "Informe um número"),
@@ -19,6 +21,7 @@ const esquemaEspecialistaEndereco = z
   })
   .transform((field) => ({
     endereco: {
+      avatar: field.endereco.avatar,
       cep: field.endereco.cep,
       rua: field.endereco.rua,
       numero: field.endereco.numero,
@@ -52,6 +55,7 @@ const CadastroEspecialistaEndereco = () => {
     resolver: zodResolver(esquemaEspecialistaEndereco),
     defaultValues: {
       endereco: {
+        avatar: new File([""], "dummy.jpg", { type: "image/jpeg" }),
         cep: "",
         rua: "",
         numero: 0,
@@ -88,7 +92,11 @@ const CadastroEspecialistaEndereco = () => {
     }
   }, [handleFetchEndereco, codigoCep, setValue]);
 
-  const aoSubmeter = (dados: esquemaEspecialistaEnderecoTipos) => {
+  const aoSubmeter = async (dados: esquemaEspecialistaEnderecoTipos) => {
+    await supabase.storage
+      .from("react-forms")
+      .upload(dados.endereco.avatar.name, dados.endereco.avatar);
+
     console.log(dados);
   };
 
@@ -99,12 +107,10 @@ const CadastroEspecialistaEndereco = () => {
         onSubmit={handleSubmit(aoSubmeter)}
         className="formulario__paciente"
       >
-        <h3 className="titulo__upload">Sua foto</h3>
-        <label htmlFor="campo-upload" className="campo__upload">
-          <img src={upload} alt="ícone de upload" />
-          <p className="descricao__upload">Clique para enviar</p>
-          <input id="campo-upload" type="file" />
-        </label>
+        <UploadFoto
+          error={errors.endereco?.avatar}
+          {...register("endereco.avatar")}
+        />
 
         <div className="formulario__divisor" />
         <CampoDigitacao
