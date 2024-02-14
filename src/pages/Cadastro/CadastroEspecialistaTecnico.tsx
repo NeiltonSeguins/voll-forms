@@ -1,31 +1,9 @@
 import Botao from "../../components/Botao";
 import CampoDigitacao from "../../components/CampoDigitacao";
-import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm, useFieldArray } from "react-hook-form";
-
-const esquemaCadastroEspecialista = z.object({
-  crm: z.string().min(1, "O campo não pode ser vazio"),
-  especialidades: z.array(
-    z.object({
-      especialidade: z.string().min(1, "Preencha a sua especialidade"),
-      anoConclusao: z.coerce
-        .number({
-          errorMap: () => {
-            return { message: "Insira um número" };
-          },
-        })
-        .min(1, "Preencha o seu ano de conclusão"),
-      instituicaoEnsino: z
-        .string()
-        .min(1, "Preencha a sua instituição de ensino"),
-    })
-  ),
-});
-
-type esquemaCadastroEspecialistaTipos = z.infer<
-  typeof esquemaCadastroEspecialista
->;
+import { esquemaCadastroEspecialistaTipos } from "../../types/types";
+import { esquemaCadastroEspecialista } from "../../schemas/esquemaEspecialista";
 
 const CadastroEspecialistaTecnico = () => {
   const {
