@@ -83,7 +83,7 @@ const CadastroEndereco = ({ proximaEtapa }: CadastroEnderecoProps) => {
         <CampoDigitacao
           id="campo-cep"
           legenda="Cep"
-          tipo="text"
+          type="text"
           placeholder="Insira seu CEP"
           error={errors.cep}
           {...register("cep", {
@@ -94,7 +94,7 @@ const CadastroEndereco = ({ proximaEtapa }: CadastroEnderecoProps) => {
         <CampoDigitacao
           id="campo-rua"
           legenda="Rua"
-          tipo="text"
+          type="text"
           placeholder="Rua Agarikov"
           error={errors.rua}
           {...register("rua", { required: "Campo obrigatóirio" })}
@@ -104,7 +104,7 @@ const CadastroEndereco = ({ proximaEtapa }: CadastroEnderecoProps) => {
           <CampoDigitacao
             id="campo-numero-rua"
             legenda="Número"
-            tipo="text"
+            type="text"
             placeholder="Ex: 20"
             error={errors.numero}
             {...register("numero", { required: "Campo obrigatório" })}
@@ -112,7 +112,7 @@ const CadastroEndereco = ({ proximaEtapa }: CadastroEnderecoProps) => {
           <CampoDigitacao
             id="campo-bairro"
             legenda="Bairro"
-            tipo="text"
+            type="text"
             placeholder="Vila Mariana"
             error={errors.bairro}
             {...register("bairro", { required: "Campo obrigatório" })}
@@ -121,12 +121,12 @@ const CadastroEndereco = ({ proximaEtapa }: CadastroEnderecoProps) => {
         <CampoDigitacao
           id="campo-localidade"
           legenda="Localidade"
-          tipo="text"
+          type="text"
           placeholder="São Paulo, SP"
           error={errors.localidade}
           {...register("localidade", { required: "Campo obrigatório" })}
         />
-        <Botao tipo="submit">Cadastrar</Botao>
+        <Botao type="submit">Cadastrar</Botao>
       </form>
     </>
   );

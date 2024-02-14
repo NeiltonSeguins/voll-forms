@@ -116,7 +116,7 @@ const CadastroEspecialistaEndereco = () => {
         <CampoDigitacao
           id="campo-cep"
           legenda="Cep"
-          tipo="text"
+          type="text"
           placeholder="Insira seu CEP"
           error={errors.endereco?.cep}
           {...register("endereco.cep")}
@@ -124,7 +124,7 @@ const CadastroEspecialistaEndereco = () => {
         <CampoDigitacao
           id="campo-rua"
           legenda="Rua"
-          tipo="text"
+          type="text"
           placeholder="Rua Agarikov"
           error={errors.endereco?.rua}
           {...register("endereco.rua")}
@@ -134,7 +134,7 @@ const CadastroEspecialistaEndereco = () => {
           <CampoDigitacao
             id="campo-numero-rua"
             legenda="Número"
-            tipo="text"
+            type="text"
             placeholder="Ex: 20"
             error={errors.endereco?.numero}
             {...register("endereco.numero")}
@@ -142,7 +142,7 @@ const CadastroEspecialistaEndereco = () => {
           <CampoDigitacao
             id="campo-bairro"
             legenda="Bairro"
-            tipo="text"
+            type="text"
             placeholder="Vila Mariana"
             error={errors.endereco?.bairro}
             {...register("endereco.bairro")}
@@ -151,12 +151,12 @@ const CadastroEspecialistaEndereco = () => {
         <CampoDigitacao
           id="campo-localidade"
           legenda="Localidade"
-          tipo="text"
+          type="text"
           placeholder="São Paulo, SP"
           error={errors.endereco?.localidade}
           {...register("endereco.localidade")}
         />
-        <Botao tipo="submit">Cadastrar</Botao>
+        <Botao type="submit">Cadastrar</Botao>
       </form>
     </>
   );

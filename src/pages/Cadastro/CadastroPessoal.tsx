@@ -61,7 +61,7 @@ const CadastroPessoal = ({ proximaEtapa }: CadastroPessoalProps) => {
         <CampoDigitacao
           id="campo-nome"
           legenda="Nome"
-          tipo="text"
+          type="text"
           placeholder="Digite seu nome completo"
           error={errors.nome}
           {...register("nome")}
@@ -69,7 +69,7 @@ const CadastroPessoal = ({ proximaEtapa }: CadastroPessoalProps) => {
         <CampoDigitacao
           id="campo-email"
           legenda="Email"
-          tipo="email"
+          type="email"
           placeholder="Insira seu endereço de email"
           error={errors.email}
           {...register("email")}
@@ -77,7 +77,7 @@ const CadastroPessoal = ({ proximaEtapa }: CadastroPessoalProps) => {
         <CampoDigitacao
           id="campo-telefone"
           legenda="Telefone"
-          tipo="text"
+          type="text"
           placeholder="Ex: (DDD) XXXXX-XXXX"
           error={errors.telefone}
           {...register("telefone")}
@@ -85,7 +85,7 @@ const CadastroPessoal = ({ proximaEtapa }: CadastroPessoalProps) => {
         <CampoDigitacao
           id="campo-senha"
           legenda="Crie uma senha"
-          tipo="password"
+          type="password"
           placeholder="Digite sua senha"
           error={errors.senha}
           {...register("senha")}
@@ -93,12 +93,12 @@ const CadastroPessoal = ({ proximaEtapa }: CadastroPessoalProps) => {
         <CampoDigitacao
           id="campo-senha-confirmacao"
           legenda="Repita a senha anterior"
-          tipo="password"
+          type="password"
           placeholder="Repita a senha"
           error={errors.senhaVerificada}
           {...register("senhaVerificada")}
         />
-        <Botao tipo="submit">Avançar</Botao>
+        <Botao type="submit">Avançar</Botao>
       </form>
     </>
   );

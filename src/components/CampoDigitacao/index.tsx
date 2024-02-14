@@ -6,21 +6,17 @@ interface CampoDigitacaoProps
   extends React.InputHTMLAttributes<HTMLInputElement> {
   legenda?: string;
   id: string;
-  tipo: string;
-  placeholder: string;
   error?: FieldError | undefined;
 }
 
 const CampoDigitacao = forwardRef<HTMLInputElement, CampoDigitacaoProps>(
-  ({ legenda, id, tipo = "text", placeholder, error, ...rest }, ref) => {
+  ({ legenda, id, error, ...rest }, ref) => {
     return (
       <div className="campo__digitacao--container">
         <label htmlFor={id}>{legenda}</label>
         <input
           className={error ? "campo__digitacao--erro" : ""}
           id={id}
-          type={tipo}
-          placeholder={placeholder}
           ref={ref}
           {...rest}
         />

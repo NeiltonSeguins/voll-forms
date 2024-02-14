@@ -66,7 +66,7 @@ const CadastroEspecialistaTecnico = () => {
         <CampoDigitacao
           id="campo-crm"
           legenda="CRM"
-          tipo="text"
+          type="text"
           placeholder="Insira seu número de registro"
           error={errors.crm}
           {...register("crm")}
@@ -78,7 +78,7 @@ const CadastroEspecialistaTecnico = () => {
               <CampoDigitacao
                 id="campo-especialidade"
                 legenda="Especialidade"
-                tipo="text"
+                type="text"
                 placeholder="Qual sua especialidade?"
                 error={errors.especialidades?.[index]?.especialidade}
                 {...register(`especialidades.${index}.especialidade`)}
@@ -87,7 +87,7 @@ const CadastroEspecialistaTecnico = () => {
                 <CampoDigitacao
                   id="campo-ano-conclusao"
                   legenda="Ano de conclusão"
-                  tipo="text"
+                  type="text"
                   placeholder="2005"
                   error={errors.especialidades?.[index]?.anoConclusao}
                   {...register(`especialidades.${index}.anoConclusao`)}
@@ -95,7 +95,7 @@ const CadastroEspecialistaTecnico = () => {
                 <CampoDigitacao
                   id="campo-instituicao-ensino"
                   legenda="Instituição de ensino"
-                  tipo="text"
+                  type="text"
                   placeholder="USP"
                   error={errors.especialidades?.[index]?.instituicaoEnsino}
                   {...register(`especialidades.${index}.instituicaoEnsino`)}
@@ -107,14 +107,14 @@ const CadastroEspecialistaTecnico = () => {
         })}
         <div className="botao-especialidade">
           <Botao
-            tipo="button"
+            type="button"
             variante="secundario"
-            handleClick={adicionarNovaEspecialidade}
+            onClick={adicionarNovaEspecialidade}
           >
             Adicionar Especialidade
           </Botao>
         </div>
-        <Botao tipo="submit">Avançar</Botao>
+        <Botao type="submit">Avançar</Botao>
       </form>
     </>
   );

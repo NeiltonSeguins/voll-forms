@@ -1,20 +1,12 @@
 import "./styles.css";
 
-type BotaoProps = {
-  tipo: "button" | "submit" | "reset" | undefined;
+interface BotaoProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variante?: "primario" | "secundario";
-  children: string;
-  handleClick?: () => void;
-};
+}
 
-function Botao({
-  tipo,
-  variante = "primario",
-  children,
-  handleClick,
-}: BotaoProps) {
+function Botao({ variante = "primario", children, ...rest }: BotaoProps) {
   return (
-    <button className={variante} type={tipo} onClick={handleClick}>
+    <button className={variante} {...rest}>
       {children}
     </button>
   );
