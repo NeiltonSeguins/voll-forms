@@ -3,13 +3,13 @@ import {
   Label,
   Fieldset,
   Input,
+  InputMask,
   ErrorMessage,
   Form,
   Titulo,
 } from "../../components";
 import { SubmitHandler, useForm, Controller } from "react-hook-form";
 import { validarEmail, validarSenha } from "../../utils/validacoes";
-import InputMask from "react-input-mask";
 
 type CadastroPessoalProps = {
   proximaEtapa: () => void;
@@ -79,13 +79,21 @@ const CadastroPessoal = ({ proximaEtapa }: CadastroPessoalProps) => {
         <Controller
           control={control}
           name="telefone"
-          render={({ field: { onChange } }) => (
+          rules={{
+            pattern: {
+              value: /^\(\d{2,3}\) \d{5}-\d{4}$/,
+              message: "O telefone inserido está no formato incorreto",
+            },
+            required: "Campo de telefone é obrigatório",
+          }}
+          render={({ field }) => (
             <Fieldset>
               <Label>Telefone</Label>
               <InputMask
                 mask="(99) 99999-9999"
                 placeholder="Ex: (DDD) XXXXX-XXXX"
-                onChange={onChange}
+                error={errors.telefone}
+                {...field}
               />
               {errors.telefone && (
                 <ErrorMessage>{errors.telefone.message}</ErrorMessage>
@@ -112,7 +120,7 @@ const CadastroPessoal = ({ proximaEtapa }: CadastroPessoalProps) => {
           {errors.senha && <ErrorMessage>{errors.senha.message}</ErrorMessage>}
         </Fieldset>
         <Fieldset>
-          <Label htmlFor="campo-senha-confirmacao">Crie uma senha</Label>
+          <Label htmlFor="campo-senha-confirmacao">Repita a senha</Label>
           <Input
             id="campo-senha-confirmacao"
             placeholder="Repita a senha anterior"
