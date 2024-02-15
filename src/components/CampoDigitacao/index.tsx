@@ -1,6 +1,8 @@
 import { forwardRef } from "react";
 import { FieldError } from "react-hook-form";
-import MensagemErro from "./MensagemErro";
+import { Fieldset } from "../Fieldset";
+import { Label } from "../Label";
+import { ErrorMessage } from "../ErrorMessage";
 
 interface CampoDigitacaoProps
   extends React.InputHTMLAttributes<HTMLInputElement> {
@@ -14,8 +16,8 @@ interface CampoDigitacaoProps
 const CampoDigitacao = forwardRef<HTMLInputElement, CampoDigitacaoProps>(
   ({ legenda, id, tipo = "text", placeholder, error, ...rest }, ref) => {
     return (
-      <div className="campo__digitacao--container">
-        <label htmlFor={id}>{legenda}</label>
+      <Fieldset>
+        <Label htmlFor={id}>{legenda}</Label>
         <input
           className={error ? "campo__digitacao--erro" : ""}
           id={id}
@@ -24,8 +26,8 @@ const CampoDigitacao = forwardRef<HTMLInputElement, CampoDigitacaoProps>(
           ref={ref}
           {...rest}
         />
-        {error && <MensagemErro>{error.message}</MensagemErro>}
-      </div>
+        {error && <ErrorMessage>{error.message}</ErrorMessage>}
+      </Fieldset>
     );
   }
 );

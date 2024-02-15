@@ -19,26 +19,8 @@ input::placeholder {
   line-height: 19px;
 }
 
-label {
-  display: block;
-  font-weight: 700;
-  font-size: 16px;
-  line-height: 19px;
-  color: var(--azul-escuro);
-}
-
 div {
   width: 100%;
-}
-
-.mensagem-erro {
-  color: #a71e1e;
-  font-size: 14px;
-  font-weight: 600;
-}
-
-.campo__digitacao--container {
-  margin: 0.25em 0;
 }
 
 .campo__digitacao--erro {
@@ -47,5 +29,5 @@ div {
 
 .campo__digitacao--erro:focus {
   border: 1px solid #a71e1e;
-  outline-color: #a71e1e  ;
+  outline-color: #a71e1e;
 }

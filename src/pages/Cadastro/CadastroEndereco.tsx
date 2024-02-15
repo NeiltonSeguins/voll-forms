@@ -1,8 +1,9 @@
 import { useEffect } from "react";
-import Botao from "../../components/Botao";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { mascaraCep } from "../../utils/mascaras";
 import CampoDigitacao from "../../components/CampoDigitacao";
+import { Button } from "../../components/Button";
+import { Form } from "../../components/Form";
 
 type CadastroEnderecoProps = {
   proximaEtapa: () => void;
@@ -76,7 +77,7 @@ const CadastroEndereco = ({ proximaEtapa }: CadastroEnderecoProps) => {
   return (
     <>
       <h2 className="titulo">Agora, mais alguns dados sobre você:</h2>
-      <form
+      <Form
         className="formulario__paciente"
         onSubmit={handleSubmit(aoSubmeter)}
       >
@@ -126,8 +127,8 @@ const CadastroEndereco = ({ proximaEtapa }: CadastroEnderecoProps) => {
           error={errors.localidade}
           {...register("localidade", { required: "Campo obrigatório" })}
         />
-        <Botao tipo="submit">Cadastrar</Botao>
-      </form>
+        <Button type="submit">Cadastrar</Button>
+      </Form>
     </>
   );
 };

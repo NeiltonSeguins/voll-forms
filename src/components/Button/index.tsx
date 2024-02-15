@@ -1,4 +1,6 @@
-button {
+import styled from "styled-components";
+
+export const Button = styled.button`
   background-color: var(--azul-escuro);
   border-radius: 8px;
   padding: 12px 16px;
@@ -9,4 +11,4 @@ button {
   line-height: 19px;
   width: 50%;
   cursor: pointer;
-}
+`;

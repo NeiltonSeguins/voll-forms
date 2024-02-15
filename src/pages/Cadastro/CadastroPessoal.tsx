@@ -1,9 +1,10 @@
 import { SubmitHandler, useForm } from "react-hook-form";
-import Botao from "../../components/Botao";
 import { useEffect } from "react";
 import { mascaraTelefone } from "../../utils/mascaras";
 import CampoDigitacao from "../../components/CampoDigitacao";
 import { validarEmail, validarSenha } from "../../utils/validacoes";
+import { Form } from "../../components/Form";
+import { Button } from "../../components/Button";
 
 type CadastroPessoalProps = {
   proximaEtapa: () => void;
@@ -42,10 +43,7 @@ const CadastroPessoal = ({ proximaEtapa }: CadastroPessoalProps) => {
   return (
     <>
       <h2 className="titulo">Insira alguns dados básicos:</h2>
-      <form
-        className="formulario__paciente"
-        onSubmit={handleSubmit(aoSubmeter)}
-      >
+      <Form onSubmit={handleSubmit(aoSubmeter)}>
         <CampoDigitacao
           id="campo-nome"
           legenda="Nome"
@@ -110,8 +108,8 @@ const CadastroPessoal = ({ proximaEtapa }: CadastroPessoalProps) => {
             validate: (value) => validarSenha(value, senha),
           })}
         />
-        <Botao tipo="submit">Avançar</Botao>
-      </form>
+        <Button type="submit">Avançar</Button>
+      </Form>
     </>
   );
 };
