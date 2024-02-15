@@ -1,10 +1,12 @@
-import { SubmitHandler, useForm } from "react-hook-form";
-import { useEffect } from "react";
-import { mascaraTelefone } from "../../utils/mascaras";
-import CampoDigitacao from "../../components/CampoDigitacao";
+import { SubmitHandler, useForm, Controller } from "react-hook-form";
 import { validarEmail, validarSenha } from "../../utils/validacoes";
+import CampoDigitacao from "../../components/CampoDigitacao";
 import { Form } from "../../components/Form";
 import { Button } from "../../components/Button";
+import { Label } from "../../components/Label";
+import { Fieldset } from "../../components/Fieldset";
+import { ErrorMessage } from "../../components/ErrorMessage";
+import InputMask from "react-input-mask";
 
 type CadastroPessoalProps = {
   proximaEtapa: () => void;
@@ -24,7 +26,7 @@ const CadastroPessoal = ({ proximaEtapa }: CadastroPessoalProps) => {
     handleSubmit,
     formState: { errors },
     watch,
-    setValue,
+    control,
   } = useForm<IFormCadastroPessoal>();
 
   const aoSubmeter: SubmitHandler<IFormCadastroPessoal> = (dados) => {
@@ -34,11 +36,6 @@ const CadastroPessoal = ({ proximaEtapa }: CadastroPessoalProps) => {
   };
 
   const senha = watch("senha");
-  const telefoneDigitado = watch("telefone");
-
-  useEffect(() => {
-    setValue("telefone", mascaraTelefone(telefoneDigitado));
-  }, [telefoneDigitado]);
 
   return (
     <>
@@ -69,19 +66,22 @@ const CadastroPessoal = ({ proximaEtapa }: CadastroPessoalProps) => {
             validate: validarEmail,
           })}
         />
-        <CampoDigitacao
-          id="campo-telefone"
-          legenda="Telefone"
-          tipo="text"
-          placeholder="Ex: (DDD) XXXXX-XXXX"
-          error={errors.telefone}
-          {...register("telefone", {
-            pattern: {
-              value: /^\(\d{2,3}\) \d{5}-\d{4}$/,
-              message: "O telefone inserido está no formato incorreto",
-            },
-            required: "Campo de telefone é obrigatório",
-          })}
+        <Controller
+          control={control}
+          name="telefone"
+          render={({ field: { onChange } }) => (
+            <Fieldset>
+              <Label>Telefone</Label>
+              <InputMask
+                mask="(99) 99999-9999"
+                placeholder="Ex: (DDD) XXXXX-XXXX"
+                onChange={onChange}
+              />
+              {errors.telefone && (
+                <ErrorMessage>{errors.telefone.message}</ErrorMessage>
+              )}
+            </Fieldset>
+          )}
         />
         <CampoDigitacao
           id="campo-senha"
