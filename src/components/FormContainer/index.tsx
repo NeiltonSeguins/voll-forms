@@ -5,6 +5,7 @@ const FormContainer = styled.div`
   justify-content: space-between;
   align-items: center;
   gap: 16px;
+  width: 100%;
 
   & > *:first-child {
     flex: 0 0 30%;

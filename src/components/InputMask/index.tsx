@@ -1,19 +1,14 @@
 import styled from "styled-components";
-import Mask from "react-input-mask";
-import { FieldError } from "react-hook-form";
+import Mask, { Props } from "react-input-mask";
+import { InputProps } from "../Input";
 
-interface InputMaskProps extends React.InputHTMLAttributes<HTMLInputElement> {
-  error?: FieldError | undefined;
-  mask: string;
-}
-
-const StyledInputMask = styled(Mask)<InputMaskProps>`
+const InputMask = styled(Mask)<InputProps, Props>`
   background: #f0f0f0;
   box-sizing: border-box;
   margin: 0.5em 0;
   box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.25);
   border-radius: 8px;
-  border: ${(props) => (props.error ? " 1px solid #a71e1e" : "none")};
+  border: ${(props) => (props.$error ? " 1px solid #a71e1e" : "none")};
   width: 100%;
   padding: 16px;
   font-weight: normal;
@@ -28,11 +23,8 @@ const StyledInputMask = styled(Mask)<InputMaskProps>`
   }
 
   &:focus {
-    outline-color: ${(props) => (props.error ? "#a71e1e" : "")};
+    outline-color: ${(props) => (props.$error ? "#a71e1e" : "")};
   }
 `;
 
-const InputMask = ({ error, mask, ...rest }: InputMaskProps) => {
-  return <StyledInputMask error={error} mask={mask} {...rest} />;
-};
 export default InputMask;

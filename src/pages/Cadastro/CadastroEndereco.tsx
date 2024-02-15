@@ -91,7 +91,7 @@ const CadastroEndereco = ({ proximaEtapa }: CadastroEnderecoProps) => {
             id="campo-cep"
             placeholder="Insira seu CEP"
             type="text"
-            error={errors.cep}
+            $error={!!errors.cep}
             {...register("cep", {
               required: "O campo de cep é obrigatório",
             })}
@@ -105,7 +105,7 @@ const CadastroEndereco = ({ proximaEtapa }: CadastroEnderecoProps) => {
             id="campo-rua"
             placeholder="Rua Agarikov"
             type="text"
-            error={errors.rua}
+            $error={!!errors.rua}
             {...register("rua", { required: "Campo obrigatóirio" })}
           />
           {errors.rua && <ErrorMessage>{errors.rua.message}</ErrorMessage>}
@@ -118,7 +118,7 @@ const CadastroEndereco = ({ proximaEtapa }: CadastroEnderecoProps) => {
               id="campo-numero-rua"
               placeholder="Ex: 1440"
               type="text"
-              error={errors.numero}
+              $error={!!errors.numero}
               {...register("numero", { required: "Campo obrigatório" })}
             />
             {errors.numero && (
@@ -131,7 +131,7 @@ const CadastroEndereco = ({ proximaEtapa }: CadastroEnderecoProps) => {
               id="campo-bairro"
               placeholder="Vila Mariana"
               type="text"
-              error={errors.bairro}
+              $error={!!errors.bairro}
               {...register("bairro", { required: "Campo obrigatório" })}
             />
             {errors.bairro && (
@@ -145,7 +145,7 @@ const CadastroEndereco = ({ proximaEtapa }: CadastroEnderecoProps) => {
             id="campo-localidade"
             placeholder="São Paulo, SP"
             type="text"
-            error={errors.localidade}
+            $error={!!errors.localidade}
             {...register("localidade", { required: "Campo obrigatório" })}
           />
           {errors.localidade && (

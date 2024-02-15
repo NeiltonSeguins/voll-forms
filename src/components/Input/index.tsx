@@ -1,18 +1,17 @@
-import { forwardRef } from "react";
-import { FieldError } from "react-hook-form";
 import styled from "styled-components";
 
-interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
-  error?: FieldError | undefined;
+export interface InputProps
+  extends React.InputHTMLAttributes<HTMLInputElement> {
+  $error?: boolean;
 }
 
-const StyledInput = styled.input<InputProps>`
+const Input = styled.input<InputProps>`
   background: #f0f0f0;
   box-sizing: border-box;
   margin: 0.5em 0;
   box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.25);
   border-radius: 8px;
-  border: ${(props) => (props.error ? " 1px solid #a71e1e" : "none")};
+  border: ${(props) => (props.$error ? " 1px solid #a71e1e" : "none")};
   width: 100%;
   padding: 16px;
   font-weight: normal;
@@ -27,14 +26,8 @@ const StyledInput = styled.input<InputProps>`
   }
 
   &:focus {
-    outline-color: ${(props) => (props.error ? "#a71e1e" : "")};
+    outline-color: ${(props) => (props.$error ? "#a71e1e" : "")};
   }
 `;
-
-const Input = forwardRef<HTMLInputElement, InputProps>(
-  ({ error, ...rest }, ref) => {
-    return <StyledInput error={error} ref={ref} {...rest} />;
-  }
-);
 
 export default Input;

@@ -30,11 +30,12 @@ const CadastroPessoal = ({ proximaEtapa }: CadastroPessoalProps) => {
     formState: { errors },
     watch,
     control,
+    reset,
   } = useForm<FormCadastroPessoal>({ mode: "all" });
 
   const aoSubmeter: SubmitHandler<FormCadastroPessoal> = (dados) => {
     console.log(dados);
-
+    reset();
     proximaEtapa();
   };
 
@@ -50,7 +51,7 @@ const CadastroPessoal = ({ proximaEtapa }: CadastroPessoalProps) => {
             id="campo-nome"
             placeholder="Digite seu nome completo"
             type="text"
-            error={errors.nome}
+            $error={!!errors.nome}
             {...register("nome", {
               required: "Campo de nome é obrigatório",
               minLength: {
@@ -67,7 +68,7 @@ const CadastroPessoal = ({ proximaEtapa }: CadastroPessoalProps) => {
             id="campo-email"
             placeholder="Insira seu endereço de email"
             type="email"
-            error={errors.email}
+            $error={!!errors.email}
             {...register("email", {
               required: "Campo de email obrigatório",
               validate: validarEmail,
@@ -86,14 +87,14 @@ const CadastroPessoal = ({ proximaEtapa }: CadastroPessoalProps) => {
             },
             required: "Campo de telefone é obrigatório",
           }}
-          render={({ field }) => (
+          render={({ field: { onChange } }) => (
             <Fieldset>
               <Label>Telefone</Label>
               <InputMask
                 mask="(99) 99999-9999"
                 placeholder="Ex: (DDD) XXXXX-XXXX"
-                error={errors.telefone}
-                {...field}
+                $error={!!errors.telefone}
+                onChange={onChange}
               />
               {errors.telefone && (
                 <ErrorMessage>{errors.telefone.message}</ErrorMessage>
@@ -108,7 +109,7 @@ const CadastroPessoal = ({ proximaEtapa }: CadastroPessoalProps) => {
             id="campo-senha"
             placeholder="Crie uma senha"
             type="password"
-            error={errors.senha}
+            $error={!!errors.senha}
             {...register("senha", {
               required: "O campo senha é obrigatório",
               minLength: {
@@ -125,7 +126,7 @@ const CadastroPessoal = ({ proximaEtapa }: CadastroPessoalProps) => {
             id="campo-senha-confirmacao"
             placeholder="Repita a senha anterior"
             type="password"
-            error={errors.senhaVerificada}
+            $error={!!errors.senhaVerificada}
             {...register("senhaVerificada", {
               required: "Repita a senha",
               validate: (value) => validarSenha(value, senha),
