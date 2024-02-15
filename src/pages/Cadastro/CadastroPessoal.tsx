@@ -1,18 +1,21 @@
+import {
+  Button,
+  Label,
+  Fieldset,
+  Input,
+  ErrorMessage,
+  Form,
+  Titulo,
+} from "../../components";
 import { SubmitHandler, useForm, Controller } from "react-hook-form";
 import { validarEmail, validarSenha } from "../../utils/validacoes";
-import CampoDigitacao from "../../components/CampoDigitacao";
-import { Form } from "../../components/Form";
-import { Button } from "../../components/Button";
-import { Label } from "../../components/Label";
-import { Fieldset } from "../../components/Fieldset";
-import { ErrorMessage } from "../../components/ErrorMessage";
 import InputMask from "react-input-mask";
 
 type CadastroPessoalProps = {
   proximaEtapa: () => void;
 };
 
-interface IFormCadastroPessoal {
+interface FormCadastroPessoal {
   nome: string;
   email: string;
   telefone: string;
@@ -27,9 +30,9 @@ const CadastroPessoal = ({ proximaEtapa }: CadastroPessoalProps) => {
     formState: { errors },
     watch,
     control,
-  } = useForm<IFormCadastroPessoal>();
+  } = useForm<FormCadastroPessoal>({ mode: "all" });
 
-  const aoSubmeter: SubmitHandler<IFormCadastroPessoal> = (dados) => {
+  const aoSubmeter: SubmitHandler<FormCadastroPessoal> = (dados) => {
     console.log(dados);
 
     proximaEtapa();
@@ -39,33 +42,40 @@ const CadastroPessoal = ({ proximaEtapa }: CadastroPessoalProps) => {
 
   return (
     <>
-      <h2 className="titulo">Insira alguns dados básicos:</h2>
+      <Titulo>Insira alguns dados básicos:</Titulo>
       <Form onSubmit={handleSubmit(aoSubmeter)}>
-        <CampoDigitacao
-          id="campo-nome"
-          legenda="Nome"
-          tipo="text"
-          placeholder="Digite seu nome completo"
-          error={errors.nome}
-          {...register("nome", {
-            required: "Campo de nome é obrigatório",
-            minLength: {
-              value: 5,
-              message: "O nome deve ter pelo menos cinco caracteres",
-            },
-          })}
-        />
-        <CampoDigitacao
-          id="campo-email"
-          legenda="Email"
-          tipo="email"
-          placeholder="Insira seu endereço de email"
-          error={errors.email}
-          {...register("email", {
-            required: "Campo de email obrigatório",
-            validate: validarEmail,
-          })}
-        />
+        <Fieldset>
+          <Label htmlFor="campo-nome">Nome</Label>
+          <Input
+            id="campo-nome"
+            placeholder="Digite seu nome completo"
+            type="text"
+            error={errors.nome}
+            {...register("nome", {
+              required: "Campo de nome é obrigatório",
+              minLength: {
+                value: 5,
+                message: "O nome deve ter pelo menos cinco caracteres",
+              },
+            })}
+          />
+          {errors.nome && <ErrorMessage>{errors.nome.message}</ErrorMessage>}
+        </Fieldset>
+        <Fieldset>
+          <Label htmlFor="campo-email">E-mail</Label>
+          <Input
+            id="campo-email"
+            placeholder="Insira seu endereço de email"
+            type="email"
+            error={errors.email}
+            {...register("email", {
+              required: "Campo de email obrigatório",
+              validate: validarEmail,
+            })}
+          />
+          {errors.nome && <ErrorMessage>{errors.nome.message}</ErrorMessage>}
+        </Fieldset>
+
         <Controller
           control={control}
           name="telefone"
@@ -83,31 +93,40 @@ const CadastroPessoal = ({ proximaEtapa }: CadastroPessoalProps) => {
             </Fieldset>
           )}
         />
-        <CampoDigitacao
-          id="campo-senha"
-          legenda="Crie uma senha"
-          tipo="password"
-          placeholder="Digite sua senha"
-          error={errors.senha}
-          {...register("senha", {
-            required: "O campo senha é obrigatório",
-            minLength: {
-              value: 8,
-              message: "A senha deve ter pelo menos 8 caracteres",
-            },
-          })}
-        />
-        <CampoDigitacao
-          id="campo-senha-confirmacao"
-          legenda="Repita a senha anterior"
-          tipo="password"
-          placeholder="Repita a senha"
-          error={errors.senhaVerificada}
-          {...register("senhaVerificada", {
-            required: "Repita a senha",
-            validate: (value) => validarSenha(value, senha),
-          })}
-        />
+
+        <Fieldset>
+          <Label htmlFor="campo-senha">Crie uma senha</Label>
+          <Input
+            id="campo-senha"
+            placeholder="Crie uma senha"
+            type="password"
+            error={errors.senha}
+            {...register("senha", {
+              required: "O campo senha é obrigatório",
+              minLength: {
+                value: 8,
+                message: "A senha deve ter pelo menos 8 caracteres",
+              },
+            })}
+          />
+          {errors.senha && <ErrorMessage>{errors.senha.message}</ErrorMessage>}
+        </Fieldset>
+        <Fieldset>
+          <Label htmlFor="campo-senha-confirmacao">Crie uma senha</Label>
+          <Input
+            id="campo-senha-confirmacao"
+            placeholder="Repita a senha anterior"
+            type="password"
+            error={errors.senhaVerificada}
+            {...register("senhaVerificada", {
+              required: "Repita a senha",
+              validate: (value) => validarSenha(value, senha),
+            })}
+          />
+          {errors.senhaVerificada && (
+            <ErrorMessage>{errors.senhaVerificada.message}</ErrorMessage>
+          )}
+        </Fieldset>
         <Button type="submit">Avançar</Button>
       </Form>
     </>

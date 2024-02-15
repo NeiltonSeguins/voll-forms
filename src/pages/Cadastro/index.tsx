@@ -1,10 +1,7 @@
-import Logotipo from "../../components/Logotipo";
-// import Etapas from "../../components/Etapas";
 import useEtapas from "../../hooks/useEtapas";
 import CadastroPessoal from "./CadastroPessoal";
 import CadastroEndereco from "./CadastroEndereco";
-import "./styles.css";
-
+import { Logotipo } from "../../components";
 export default function Cadastro() {
   const { etapaAtiva, handleProximaEtapa } = useEtapas();
 
@@ -17,11 +14,11 @@ export default function Cadastro() {
         handleStep={handleStep}
       /> */}
 
-      {etapaAtiva === 0 ? (
-        <CadastroPessoal proximaEtapa={handleProximaEtapa} />
-      ) : (
-        <CadastroEndereco proximaEtapa={handleProximaEtapa} />
-      )}
+      {/* {etapaAtiva === 0 ? (
+      ) : ( */}
+      <CadastroPessoal proximaEtapa={handleProximaEtapa} />
+      {/* <CadastroEndereco proximaEtapa={handleProximaEtapa} /> */}
+      {/* // )} */}
     </>
   );
 }
