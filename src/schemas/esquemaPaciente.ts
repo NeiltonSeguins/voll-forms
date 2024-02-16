@@ -11,7 +11,12 @@ export const esquemaPacienteCadastro = z
       .refine((email) => {
         return email.endsWith("@voll.com.br");
       }, "O email deve ser institucional da VollMed"),
-    telefone: z.string(),
+    telefone: z
+      .string()
+      .regex(
+        /^\(\d{2,3}\) \d{5}-\d{4}$/,
+        "O telefone está no formato incorreto"
+      ),
     senha: z.string().min(8, "A senha deve ter pelo menos 8 caracteres"),
     senhaVerificada: z.string().min(1, "Este campo não pode ser vazio"),
   })

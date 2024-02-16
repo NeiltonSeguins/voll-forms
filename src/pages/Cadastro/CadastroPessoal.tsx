@@ -1,18 +1,24 @@
-import { SubmitHandler, useForm } from "react-hook-form";
-import Botao from "../../components/Botao";
-import CampoDigitacao from "../../components/CampoDigitacao";
+import {
+  Button,
+  Label,
+  Fieldset,
+  Input,
+  InputMask,
+  ErrorMessage,
+  Form,
+  Titulo,
+} from "../../components";
+import { SubmitHandler, useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { esquemaCadastroTipos } from "../../types/types";
 import { esquemaPacienteCadastro } from "../../schemas/esquemaPaciente";
 
-type CadastroPessoalProps = {
-  proximaEtapa: () => void;
-};
-
-const CadastroPessoal = ({ proximaEtapa }: CadastroPessoalProps) => {
+const CadastroPessoal = () => {
   const {
     register,
     handleSubmit,
+    reset,
+    control,
     formState: { errors },
   } = useForm<esquemaCadastroTipos>({
     mode: "all",
@@ -21,59 +27,86 @@ const CadastroPessoal = ({ proximaEtapa }: CadastroPessoalProps) => {
 
   const aoSubmeter: SubmitHandler<esquemaCadastroTipos> = (dados) => {
     console.log(dados);
-
-    proximaEtapa();
+    reset();
   };
 
   return (
     <>
-      <h2 className="titulo">Insira alguns dados básicos:</h2>
-      <form
-        className="formulario__paciente"
-        onSubmit={handleSubmit(aoSubmeter)}
-      >
-        <CampoDigitacao
-          id="campo-nome"
-          legenda="Nome"
-          type="text"
-          placeholder="Digite seu nome completo"
-          error={errors.nome}
-          {...register("nome")}
+      <Titulo className="titulo">Insira alguns dados básicos:</Titulo>
+      <Form onSubmit={handleSubmit(aoSubmeter)}>
+        <Fieldset>
+          <Label htmlFor="campo-nome">Nome</Label>
+          <Input
+            id="campo-nome"
+            placeholder="Digite seu nome completo"
+            type="text"
+            $error={!!errors.nome}
+            {...register("nome")}
+          />
+          {errors.nome && <ErrorMessage>{errors.nome.message}</ErrorMessage>}
+        </Fieldset>
+        <Fieldset>
+          <Label htmlFor="campo-email">E-mail</Label>
+          <Input
+            id="campo-email"
+            placeholder="Insira seu endereço de email"
+            type="email"
+            $error={!!errors.email}
+            {...register("email")}
+          />
+          {errors.nome && <ErrorMessage>{errors.nome.message}</ErrorMessage>}
+        </Fieldset>
+        <Controller
+          control={control}
+          name="telefone"
+          rules={{
+            pattern: {
+              value: /^\(\d{2,3}\) \d{5}-\d{4}$/,
+              message: "O telefone inserido está no formato incorreto",
+            },
+            required: "Campo de telefone é obrigatório",
+          }}
+          render={({ field: { onChange } }) => (
+            <Fieldset>
+              <Label>Telefone</Label>
+              <InputMask
+                mask="(99) 99999-9999"
+                placeholder="Ex: (DDD) XXXXX-XXXX"
+                $error={!!errors.telefone}
+                onChange={onChange}
+              />
+              {errors.telefone && (
+                <ErrorMessage>{errors.telefone.message}</ErrorMessage>
+              )}
+            </Fieldset>
+          )}
         />
-        <CampoDigitacao
-          id="campo-email"
-          legenda="Email"
-          type="email"
-          placeholder="Insira seu endereço de email"
-          error={errors.email}
-          {...register("email")}
-        />
-        <CampoDigitacao
-          id="campo-telefone"
-          legenda="Telefone"
-          type="text"
-          placeholder="Ex: (DDD) XXXXX-XXXX"
-          error={errors.telefone}
-          {...register("telefone")}
-        />
-        <CampoDigitacao
-          id="campo-senha"
-          legenda="Crie uma senha"
-          type="password"
-          placeholder="Digite sua senha"
-          error={errors.senha}
-          {...register("senha")}
-        />
-        <CampoDigitacao
-          id="campo-senha-confirmacao"
-          legenda="Repita a senha anterior"
-          type="password"
-          placeholder="Repita a senha"
-          error={errors.senhaVerificada}
-          {...register("senhaVerificada")}
-        />
-        <Botao type="submit">Avançar</Botao>
-      </form>
+        <Fieldset>
+          <Label htmlFor="campo-senha">Crie uma senha</Label>
+          <Input
+            id="campo-senha"
+            placeholder="Crie uma senha"
+            type="password"
+            $error={!!errors.senha}
+            {...register("senha")}
+          />
+          {errors.senha && <ErrorMessage>{errors.senha.message}</ErrorMessage>}
+        </Fieldset>
+        <Fieldset>
+          <Label htmlFor="campo-senha-confirmacao">Repita a senha</Label>
+          <Input
+            id="campo-senha-confirmacao"
+            placeholder="Repita a senha anterior"
+            type="password"
+            $error={!!errors.senhaVerificada}
+            {...register("senhaVerificada")}
+          />
+          {errors.senhaVerificada && (
+            <ErrorMessage>{errors.senhaVerificada.message}</ErrorMessage>
+          )}
+        </Fieldset>
+        <Button type="submit">Avançar</Button>
+      </Form>
     </>
   );
 };

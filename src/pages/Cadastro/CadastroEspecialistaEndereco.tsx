@@ -1,69 +1,122 @@
-import Botao from "../../components/Botao";
-import CampoDigitacao from "../../components/CampoDigitacao";
-import UploadFoto from "../../components/UploadFoto";
+import {
+  Button,
+  Divisor,
+  ErrorMessage,
+  Fieldset,
+  Form,
+  FormContainer,
+  Input,
+  Label,
+  Titulo,
+  UploadDescription,
+  UploadIcon,
+  UploadInput,
+  UploadLabel,
+} from "../../components";
 import useCep from "../../hooks/useCep";
+import UploadTitulo from "../../components/UploadTitulo";
 
 const CadastroEspecialistaEndereco = () => {
   const { handleSubmit, aoSubmeter, register, errors } = useCep();
 
   return (
     <>
-      <h2 className="titulo">Para finalizar, só alguns detalhes!</h2>
-      <form
-        onSubmit={handleSubmit(aoSubmeter)}
-        className="formulario__paciente"
-      >
-        <UploadFoto
-          error={errors.endereco?.avatar}
-          {...register("endereco.avatar")}
-        />
-
-        <div className="formulario__divisor" />
-        <CampoDigitacao
-          id="campo-cep"
-          legenda="Cep"
-          type="text"
-          placeholder="Insira seu CEP"
-          error={errors.endereco?.cep}
-          {...register("endereco.cep")}
-        />
-        <CampoDigitacao
-          id="campo-rua"
-          legenda="Rua"
-          type="text"
-          placeholder="Rua Agarikov"
-          error={errors.endereco?.rua}
-          {...register("endereco.rua")}
-        />
-
-        <div className="formulario__container">
-          <CampoDigitacao
-            id="campo-numero-rua"
-            legenda="Número"
-            type="text"
-            placeholder="Ex: 20"
-            error={errors.endereco?.numero}
-            {...register("endereco.numero")}
-          />
-          <CampoDigitacao
-            id="campo-bairro"
-            legenda="Bairro"
-            type="text"
-            placeholder="Vila Mariana"
-            error={errors.endereco?.bairro}
-            {...register("endereco.bairro")}
-          />
+      <Titulo className="titulo">Para finalizar, só alguns detalhes!</Titulo>
+      <Form onSubmit={handleSubmit(aoSubmeter)}>
+        <div>
+          <UploadTitulo>Sua foto</UploadTitulo>
+          <UploadLabel htmlFor="campo-upload">
+            <UploadIcon />
+            <UploadDescription>Clique para enviar</UploadDescription>
+            <UploadInput
+              accept="image/*"
+              id="campo-upload"
+              type="file"
+              {...register("endereco.avatar")}
+            />
+          </UploadLabel>
+          {errors.endereco?.avatar && (
+            <ErrorMessage>{errors.endereco?.avatar.message}</ErrorMessage>
+          )}
         </div>
-        <CampoDigitacao
-          id="campo-localidade"
-          legenda="Localidade"
-          type="text"
-          placeholder="São Paulo, SP"
-          error={errors.endereco?.localidade}
-          {...register("endereco.localidade")}
-        />
-        <Botao type="submit">Cadastrar</Botao>
-      </form>
+
+        <Divisor />
+        <Fieldset>
+          <Label htmlFor="campo-cep">CEP</Label>
+          <Input
+            id="campo-cep"
+            placeholder="Insira seu CEP"
+            type="text"
+            $error={!!errors.endereco?.cep}
+            {...register("endereco.cep")}
+          />
+          {errors.endereco?.cep && (
+            <ErrorMessage>{errors.endereco?.cep.message}</ErrorMessage>
+          )}
+        </Fieldset>
+        <Fieldset>
+          <Label htmlFor="campo-rua">Rua</Label>
+          <Input
+            id="campo-rua"
+            placeholder="Rua Agarikov"
+            type="text"
+            $error={!!errors.endereco?.rua}
+            {...register("endereco.rua", { required: "Campo obrigatóirio" })}
+          />
+          {errors.endereco?.rua && (
+            <ErrorMessage>{errors.endereco?.rua.message}</ErrorMessage>
+          )}
+        </Fieldset>
+
+        <FormContainer>
+          <Fieldset>
+            <Label htmlFor="campo-numero-rua">Número</Label>
+            <Input
+              id="campo-numero-rua"
+              placeholder="Ex: 1440"
+              type="text"
+              $error={!!errors.endereco?.numero}
+              {...register("endereco.numero", {
+                required: "Campo obrigatório",
+              })}
+            />
+            {errors.endereco?.numero && (
+              <ErrorMessage>{errors.endereco?.numero.message}</ErrorMessage>
+            )}
+          </Fieldset>
+          <Fieldset>
+            <Label htmlFor="campo-bairro">Bairro</Label>
+            <Input
+              id="campo-bairro"
+              placeholder="Vila Mariana"
+              type="text"
+              $error={!!errors.endereco?.bairro}
+              {...register("endereco.bairro", {
+                required: "Campo obrigatório",
+              })}
+            />
+            {errors.endereco?.bairro && (
+              <ErrorMessage>{errors.endereco?.bairro.message}</ErrorMessage>
+            )}
+          </Fieldset>
+        </FormContainer>
+        <Fieldset>
+          <Label htmlFor="campo-localidade">Localidade</Label>
+          <Input
+            id="campo-localidade"
+            placeholder="São Paulo, SP"
+            type="text"
+            $error={!!errors.endereco?.localidade}
+            {...register("endereco.localidade", {
+              required: "Campo obrigatório",
+            })}
+          />
+          {errors.endereco?.localidade && (
+            <ErrorMessage>{errors.endereco?.localidade.message}</ErrorMessage>
+          )}
+        </Fieldset>
+        <Button type="submit">Cadastrar</Button>
+      </Form>
     </>
   );
 };
